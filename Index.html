@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>고양이 상담 사이트</title>
+  <style>
+    /* CSS 작성 */
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 20px;
+      background-color: #f0f0f0;
+    }
+
+    h1 {
+      color: #663399;
+    }
+
+    #chatbox {
+      height: 300px;
+      overflow-y: scroll;
+      border: 1px solid #ccc;
+      padding: 10px;
+    }
+
+    #input-area {
+      margin-top: 10px;
+    }
+
+    #message-input {
+      width: 80%;
+      padding: 5px;
+    }
+
+    button {
+      padding: 5px 10px;
+      background-color: #663399;
+      color: #ffffff;
+      border: none;
+      cursor: pointer;
+    }
+
+    .user-message {
+      text-align: left;
+      color: #333333;
+    }
+
+    .cat-message {
+      text-align: left;
+      color: #ff6600;
+    }
+  </style>
+</head>
+<body>
+  <h1>고양이 상담 사이트</h1>
+  <div id="chatbox">
+    <!-- 채팅 메시지들이 표시되는 공간 -->
+  </div>
+  <div id="input-area">
+    <input type="text" id="message-input" placeholder="고양이에게 상담해보세요">
+    <button onclick="sendMessage()">전송</button>
+  </div>
+
+  <script>
+    // 고양이의 반응들을 정의합니다.
+    const catResponses = [
+      "냐옹?",
+      "알겠냐옹!",
+      "고양이가 대답할 수 있는 질문을 해보세요!",
+      "미아옹~",
+      "행복한 일만 가득하길 빈다냥~",
+      "고양이가 함께 할게냐옹~"
+    ];
+
+    // 상담 내용을 저장할 배열
+    const chatMessages = [];
+
+    // 메시지를 보여주는 함수
+    function displayMessage(message, sender) {
+      const chatbox = document.getElementById('chatbox');
+      const messageElement = document.createElement('p');
+
+      if (sender === 'user') {
+        messageElement.classList.add('user-message');
+      } else if (sender === 'cat') {
+        messageElement.classList.add('cat-message');
+      }
+
+      messageElement.innerText = message;
+      chatbox.appendChild(messageElement);
+      chatbox.scrollTop = chatbox.scrollHeight; // 스크롤을 항상 아래로 내려줌
+    }
+
+    // 고양이의 반응을 보여주는 함수
+    function displayCatResponse() {
+      const randomIndex = Math.floor(Math.random() * catResponses.length);
+      const catResponse = catResponses[randomIndex];
+      displayMessage(catResponse, 'cat');
+    }
+
+    // 메시지 전송 함수
+    function sendMessage() {
+      const messageInput = document.getElementById('message-input');
+      const message = messageInput.value.trim();
+
+      if (message !== '') {
+        chatMessages.push({ message, sender: 'user' });
+        displayMessage(message, 'user');
+
+        // 일정 시간 후에 고양이의 반응을 보여줍니다.
+        setTimeout(displayCatResponse, 800);
+
+        messageInput.value = '';
+      }
+    }
+
+    // 초기화 함수
+    function init() {
+      const messageInput = document.getElementById('message-input');
+      messageInput.addEventListener('keyup', function (event) {
+        if (event.keyCode === 13) {
+          sendMessage();
+        }
+      });
+    }
+
+    init();
+  </script>
+</body>
+</html>
